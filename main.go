@@ -8,10 +8,13 @@ import (
 	"github.com/gocolly/colly"
 )
 
+const ticketSelector = "#post-44447 > div > h2:nth-child(1)"
+const URLTemplate = "https://parking-servis.co.rs/edpk/?fine=%s"
+
 func main() {
 
 	col := colly.NewCollector()
-	col.OnHTML("#post-44447 > div > h2:nth-child(1)", func(el *colly.HTMLElement) {
+	col.OnHTML(ticketSelector, func(el *colly.HTMLElement) {
 		fmt.Println(el.Text)
 	})
 
@@ -22,7 +25,7 @@ func main() {
 		}
 	})
 
-	err := col.Visit(fmt.Sprintf("https://parking-servis.co.rs/edpk/?fine=%s", os.Args[1]))
+	err := col.Visit(fmt.Sprintf(URLTemplate, os.Args[1]))
 	if err != nil {
 		panic(err)
 	}
